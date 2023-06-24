@@ -1,8 +1,10 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "./App.css";
 import { snacks } from "./backend/data";
 function App() {
   const [items, setItems] = useState(snacks);
+  const [price, setPrice] = useState(false);
+  const [cal, setCal] = useState(false);
   const searchHandler = (text) => {
     const temp =
       text.length > 0
@@ -13,34 +15,34 @@ function App() {
 
     setItems(temp);
   };
-  const IdSort = () => {
-    const temp = snacks.sort((a, b) => b.id - a.id);
-    setItems(temp);
+  const priceSort = (bool) => {
+    if (bool) {
+      const temp = snacks
+        .map((items) => items)
+        .sort((a, b) => a.price - b.price);
+      setItems(temp);
+    }
+    if (!bool) {
+      const temp = snacks
+        .map((items) => items)
+        .sort((a, b) => b.price - a.price);
+      setItems(temp);
+    }
   };
-  const nameSort = () => {
-    const temp = snacks.sort((a, b) => a.product_name - b.product_name);
-    setItems(temp);
-    console.log(snacks.sort((a, b) => a.product_name - b.product_name));
+  const caloriesSort = (bool) => {
+    if (bool) {
+      const temp = snacks
+        .map((items) => items)
+        .sort((a, b) => a.calories - b.calories);
+      setItems(temp);
+    }
+    if (!bool) {
+      const temp = snacks
+        .map((items) => items)
+        .sort((a, b) => b.calories - a.calories);
+      setItems(temp);
+    }
   };
-
-  const weightSort = () => {
-    const temp = snacks
-      .map((item) => item)
-      .sort((a, b) => a.product_weight - b.product_weight);
-    setItems(temp);
-  };
-  const priceSort = () => {
-    const temp = snacks.map((items) => items).sort((a, b) => a.price - b.price);
-    setItems(temp);
-  };
-  const caloriesSort = () => {
-    const temp = snacks.map((items)=>items).sort((a, b) => a.calories - b.calories);
-    setItems(temp);
-    console.log(temp, "temp");
-  };
-  useEffect(() => {
-    console.log(items);
-  }, []);
   return (
     <div className="App" style={{ margin: "2rem" }}>
       <h1>Snack Table</h1>
@@ -62,7 +64,6 @@ function App() {
               width: "10px",
               cursor: "pointer",
             }}
-            onChange={() => IdSort()}
           >
             <b>ID</b>
           </div>
@@ -73,7 +74,6 @@ function App() {
               width: "100px",
               cursor: "pointer",
             }}
-            //onClick={() => nameSort()}
           >
             <b>NAME</b>
           </div>
@@ -84,7 +84,6 @@ function App() {
               width: "100px",
               cursor: "pointer",
             }}
-            //onClick={() => weightSort()}
           >
             <b>WEIGHT</b>
           </div>
@@ -95,7 +94,10 @@ function App() {
               width: "100px",
               cursor: "pointer",
             }}
-            onClick={() => priceSort()}
+            onClick={() => {
+              priceSort(price);
+              setPrice(!price);
+            }}
           >
             <b>PRICE</b>
           </div>
@@ -106,7 +108,10 @@ function App() {
               width: "100px",
               cursor: "pointer",
             }}
-            onClick={() => caloriesSort()}
+            onClick={() => {
+              caloriesSort(cal);
+              setCal(!cal);
+            }}
           >
             <b>CALEROIES</b>
           </div>
